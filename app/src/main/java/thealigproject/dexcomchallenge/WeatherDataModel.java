@@ -50,7 +50,7 @@ public class WeatherDataModel {
 
             WeatherDataModel weatherData = new WeatherDataModel();
 
-            //Condition for each day of the week
+            //Condition (icon) for each day of the week
             weatherData.mCondition = jsonObject.getJSONObject("daily").getJSONArray("data")
                     .getJSONObject(0).getString("icon");
             weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
