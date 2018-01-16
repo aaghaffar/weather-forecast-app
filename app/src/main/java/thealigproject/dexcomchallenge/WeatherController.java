@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,7 +54,7 @@ public class WeatherController extends AppCompatActivity {
     TextView mDayLabel;
     ImageView mWeatherImage;
     TextView mTemperatureLabel;
-    ImageButton mRefreshButton;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // TODO: Declare a LocationManager and a LocationListener here:
     LocationManager mLocationManager;
@@ -72,18 +73,22 @@ public class WeatherController extends AppCompatActivity {
         mDayLabel = findViewById(R.id.dayTV);
         mWeatherImage = findViewById(R.id.weatherSymbolIV);
         mTemperatureLabel = findViewById(R.id.tempTV);
-        mRefreshButton = findViewById(R.id.refreshButton);
         mListView  = findViewById(R.id.dayList);
+        mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
 
         //Refresh will find current location and update UI accordingly
-        mRefreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
 
-                getWeatherForCurrentLocation();
-                Log.d("DXCM", "Refreshed");
-            }
-        });
+                        getWeatherForCurrentLocation();
+                        Log.d("DXCM", "Refreshed");
+                        mSwipeRefreshLayout.setRefreshing(false);
+
+                    }
+                }
+        );
     }
 
     //onResume contains main method call to retrieve location and consequently update UI

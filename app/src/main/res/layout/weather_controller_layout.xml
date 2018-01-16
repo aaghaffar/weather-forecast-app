@@ -6,39 +6,18 @@
     android:layout_height="match_parent"
     tools:context="thealigproject.dexcomchallenge.WeatherController">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="121dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/refreshButton"
-            android:layout_width="77dp"
-            android:layout_height="68dp"
-            android:layout_marginBottom="24dp"
-            android:layout_marginEnd="152dp"
-            android:layout_marginStart="152dp"
-            android:layout_marginTop="32dp"
-            android:background="@android:color/background_light"
-            android:scaleType="fitCenter"
-            android:tint="@android:color/holo_blue_dark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.68"
-            app:srcCompat="@android:drawable/ic_popup_sync" />
+        <ListView
+            android:id="@+id/dayList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
 
-    </android.support.constraint.ConstraintLayout>
-
-    <ListView
-        android:id="@+id/dayList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-    </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>
