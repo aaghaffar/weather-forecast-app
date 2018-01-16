@@ -52,7 +52,7 @@ public class WeatherDataModel {
 
             //Condition for each day of the week
             weatherData.mCondition = jsonObject.getJSONObject("daily").getJSONArray("data")
-                        .getJSONObject(0).getString("icon");
+                    .getJSONObject(0).getString("icon");
             weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
             weatherData.mCondition1 = jsonObject.getJSONObject("daily").getJSONArray("data")
                     .getJSONObject(1).getString("icon");
@@ -129,7 +129,7 @@ public class WeatherDataModel {
 
             return weatherData;
 
-        } catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
@@ -225,87 +225,4 @@ public class WeatherDataModel {
             return null;
         }
     }
-
-    public String getTemperature1() {
-        return mTemperature1 + "°F ";
-    }
-
-    public String getTemperature2() {
-        return mTemperature2 + "°F ";
-    }
-
-    public String getTemperature3() {
-        return mTemperature3 + "°F ";
-    }
-
-    public String getTemperature4() {
-        return mTemperature4 + "°F ";
-    }
-
-    public String getTemperature5() {
-        return mTemperature5 + "°F ";
-    }
-
-    public String getTemperature6() {
-        return mTemperature6 + "°F ";
-    }
-
-    //Humidity
-
-    public String getHumidity() {
-        return "Humidity = " + mHumidity;
-    }
-
-    public String getHumidity1() {
-        return "Humidity = " + mHumidity1;
-    }
-
-    public String getHumidity2() {
-        return "Humidity = " + mHumidity2;
-    }
-
-    public String getHumidity3() {
-        return "Humidity = " + mHumidity3;
-    }
-
-    public String getHumidity4() {
-        return "Humidity = " + mHumidity4;
-    }
-
-    public String getHumidity5() {
-        return "Humidity = " + mHumidity5;
-    }
-
-    public String getHumidity6() { return "Humidity = " + mHumidity6; }
-
-    //IconsNames
-
-    public String getIconName() {
-        return mIconName;
-    }
-
-    public String getIconName1() {
-        return mIconName1;
-    }
-
-    public String getIconName2() {
-        return mIconName2;
-    }
-
-    public String getIconName3() {
-        return mIconName3;
-    }
-
-    public String getIconName4() {
-        return mIconName4;
-    }
-
-    public String getIconName5() {
-        return mIconName5;
-    }
-
-    public String getIconName6() {
-        return mIconName6;
-    }
-
 }

@@ -192,7 +192,7 @@ public class WeatherController extends AppCompatActivity {
                         Intent intent = new Intent(WeatherController.this, DetailActivity.class);
 
                         String[] humidityArray = {weatherData.getHumidity(dayArray[0]), weatherData.getHumidity(dayArray[1]), weatherData.getHumidity(dayArray[2]),
-                                weatherData.getHumidity3(), weatherData.getHumidity(dayArray[4]), weatherData.getHumidity(dayArray[5]), weatherData.getHumidity(dayArray[6])};
+                                weatherData.getHumidity(dayArray[3]), weatherData.getHumidity(dayArray[4]), weatherData.getHumidity(dayArray[5]), weatherData.getHumidity(dayArray[6])};
 
                         String message = humidityArray[position];
                         intent.putExtra("humidity", message);
