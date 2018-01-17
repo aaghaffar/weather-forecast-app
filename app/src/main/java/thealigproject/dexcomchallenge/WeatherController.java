@@ -50,7 +50,7 @@ public class WeatherController extends AppCompatActivity {
     // TODO: Set LOCATION_PROVIDER here:
     String LOCATION_PROVIDER = LocationManager.GPS_PROVIDER;
 
-    // Member Variables:
+    // Member Variables
     TextView mDayLabel;
     ImageView mWeatherImage;
     TextView mTemperatureLabel;
