@@ -84,7 +84,6 @@ public class WeatherController extends AppCompatActivity {
 
                         getWeatherForCurrentLocation();
                         Log.d("DXCM", "Refreshed");
-                        mSwipeRefreshLayout.setRefreshing(false);
 
                     }
                 }
@@ -155,6 +154,7 @@ public class WeatherController extends AppCompatActivity {
             return;
         }
         mLocationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, mLocationListener);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
