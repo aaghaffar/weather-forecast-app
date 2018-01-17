@@ -38,7 +38,7 @@ import cz.msebera.android.httpclient.Header;
 public class WeatherController extends AppCompatActivity {
 
     // Constants:
-    final int REQUEST_CODE = 123;
+    final int REQUEST_CODE = 678;
     final String WEATHER_URL = "https://api.darksky.net/forecast/";
     // App ID to use DarkSky data
     final String KEY = "0ce8d92b388386c147050fa6e2e658eb";
