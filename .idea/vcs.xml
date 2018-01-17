@@ -5,6 +5,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/dexcom-challenge-android" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../dexcom-challenge-android" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../dexcom-challenge-android-aaghaffar" vcs="Git" />
     <mapping directory="$USER_HOME$/repos" vcs="Git" />
     <mapping directory="$USER_HOME$/repos/dexcom-challenge-android" vcs="Git" />
   </component>
