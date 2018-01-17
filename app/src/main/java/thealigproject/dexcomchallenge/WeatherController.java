@@ -83,7 +83,7 @@ public class WeatherController extends AppCompatActivity {
                     public void onRefresh() {
 
                         getWeatherForCurrentLocation();
-                        Log.d("DXCM", "Refreshed" );
+                        Log.d("DXCM", "Refreshed");
                         mSwipeRefreshLayout.setRefreshing(false);
 
                     }
