@@ -126,12 +126,12 @@ public class WeatherController extends AppCompatActivity {
 
             @Override
             public void onStatusChanged(String s, int i, Bundle bundle) {
-
+                Log.d("DXCM", "onStatusChanged() callback received");
             }
 
             @Override
             public void onProviderEnabled(String s) {
-
+                Log.d("DXCM", "onProviderEnabled() callback received");
             }
 
             @Override
@@ -241,6 +241,7 @@ public class WeatherController extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        Log.d("DXCM", "onPause callback received");
         //Stops updates at the onPause so it doesn't continuously find location
         if (mLocationManager != null) mLocationManager.removeUpdates(mLocationListener);
     }

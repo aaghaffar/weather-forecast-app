@@ -5,6 +5,9 @@ import android.widget.ListView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Ali on 1/13/18.
  */
@@ -50,79 +53,66 @@ public class WeatherDataModel {
 
             WeatherDataModel weatherData = new WeatherDataModel();
 
+            List<JSONObject> jsonArray = new ArrayList<JSONObject>();
+            JSONObject jsonResult;
+            for(int i = 0; i <= 6 ; i++) {
+                    jsonResult = jsonObject.getJSONObject("daily").getJSONArray("data")
+                        .getJSONObject(i);
+                    jsonArray.add(jsonResult);
+            }
+
             //Condition for each day of the week
-            weatherData.mCondition = jsonObject.getJSONObject("daily").getJSONArray("data")
-                    .getJSONObject(0).getString("icon");
+            weatherData.mCondition = jsonArray.get(0).getString("icon");
             weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
-            weatherData.mCondition1 = jsonObject.getJSONObject("daily").getJSONArray("data")
-                    .getJSONObject(1).getString("icon");
+            weatherData.mCondition1 = jsonArray.get(1).getString("icon");
             weatherData.mIconName1 = updateWeatherIcon(weatherData.mCondition1);
-            weatherData.mCondition2 = jsonObject.getJSONObject("daily").getJSONArray("data")
-                    .getJSONObject(2).getString("icon");
+            weatherData.mCondition2 = jsonArray.get(2).getString("icon");
             weatherData.mIconName2 = updateWeatherIcon(weatherData.mCondition2);
-            weatherData.mCondition3 = jsonObject.getJSONObject("daily").getJSONArray("data")
-                    .getJSONObject(3).getString("icon");
+            weatherData.mCondition3 = jsonArray.get(3).getString("icon");
             weatherData.mIconName3 = updateWeatherIcon(weatherData.mCondition3);
-            weatherData.mCondition4 = jsonObject.getJSONObject("daily").getJSONArray("data")
-                    .getJSONObject(4).getString("icon");
+            weatherData.mCondition4 = jsonArray.get(4).getString("icon");
             weatherData.mIconName4 = updateWeatherIcon(weatherData.mCondition4);
-            weatherData.mCondition5 = jsonObject.getJSONObject("daily").getJSONArray("data")
-                    .getJSONObject(5).getString("icon");
+            weatherData.mCondition5 = jsonArray.get(5).getString("icon");
             weatherData.mIconName5 = updateWeatherIcon(weatherData.mCondition5);
-            weatherData.mCondition6 = jsonObject.getJSONObject("daily").getJSONArray("data")
-                    .getJSONObject(6).getString("icon");
+            weatherData.mCondition6 = jsonArray.get(6).getString("icon");
             weatherData.mIconName6 = updateWeatherIcon(weatherData.mCondition6);
 
             //Humidity for each day of the week
-            double humidityResult = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(0)
-                    .getDouble("humidity");
+            double humidityResult = jsonArray.get(0).getDouble("humidity");
             weatherData.mHumidity = Double.toString(humidityResult);
-            double humidityResult1 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(1)
-                    .getDouble("humidity");
+            double humidityResult1 = jsonArray.get(1).getDouble("humidity");
             weatherData.mHumidity1 = Double.toString(humidityResult1);
-            double humidityResult2 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(2)
-                    .getDouble("humidity");
+            double humidityResult2 = jsonArray.get(2).getDouble("humidity");
             weatherData.mHumidity2 = Double.toString(humidityResult2);
-            double humidityResult3 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(3)
-                    .getDouble("humidity");
+            double humidityResult3 = jsonArray.get(3).getDouble("humidity");
             weatherData.mHumidity3 = Double.toString(humidityResult3);
-            double humidityResult4 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(4)
-                    .getDouble("humidity");
+            double humidityResult4 = jsonArray.get(4).getDouble("humidity");
             weatherData.mHumidity4 = Double.toString(humidityResult4);
-            double humidityResult5 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(5)
-                    .getDouble("humidity");
+            double humidityResult5 = jsonArray.get(5).getDouble("humidity");
             weatherData.mHumidity5 = Double.toString(humidityResult5);
-            double humidityResult6 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(6)
-                    .getDouble("humidity");
+            double humidityResult6 = jsonArray.get(6).getDouble("humidity");
             weatherData.mHumidity6 = Double.toString(humidityResult6);
 
             //Temperature for each day of the week
-            double tempResult = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(0)
-                    .getDouble("temperatureMax");
+            double tempResult = jsonArray.get(0).getDouble("temperatureMax");
             int roundedValue = (int) Math.rint(tempResult);
             weatherData.mTemperature = Integer.toString(roundedValue);
-            double tempResult1 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(1)
-                    .getDouble("temperatureMax");
+            double tempResult1 = jsonArray.get(1).getDouble("temperatureMax");
             int roundedValue1 = (int) Math.rint(tempResult1);
             weatherData.mTemperature1 = Integer.toString(roundedValue1);
-            double tempResult2 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(2)
-                    .getDouble("temperatureMax");
+            double tempResult2 = jsonArray.get(2).getDouble("temperatureMax");
             int roundedValue2 = (int) Math.rint(tempResult2);
             weatherData.mTemperature2 = Integer.toString(roundedValue2);
-            double tempResult3 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(3)
-                    .getDouble("temperatureMax");
+            double tempResult3 = jsonArray.get(3).getDouble("temperatureMax");
             int roundedValue3 = (int) Math.rint(tempResult3);
             weatherData.mTemperature3 = Integer.toString(roundedValue3);
-            double tempResult4 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(4)
-                    .getDouble("temperatureMax");
+            double tempResult4 = jsonArray.get(4).getDouble("temperatureMax");
             int roundedValue4 = (int) Math.rint(tempResult4);
             weatherData.mTemperature4 = Integer.toString(roundedValue4);
-            double tempResult5 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(5)
-                    .getDouble("temperatureMax");
+            double tempResult5 = jsonArray.get(5).getDouble("temperatureMax");
             int roundedValue5 = (int) Math.rint(tempResult5);
             weatherData.mTemperature5 = Integer.toString(roundedValue5);
-            double tempResult6 = jsonObject.getJSONObject("daily").getJSONArray("data").getJSONObject(6)
-                    .getDouble("temperatureMax");
+            double tempResult6 = jsonArray.get(6).getDouble("temperatureMax");
             int roundedValue6 = (int) Math.rint(tempResult6);
             weatherData.mTemperature6 = Integer.toString(roundedValue6);
 
