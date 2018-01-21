@@ -40,7 +40,7 @@ public class WeatherController extends AppCompatActivity {
     // Constants:
     final int REQUEST_CODE = 678;
     final String WEATHER_URL = "https://api.darksky.net/forecast/";
-    // App ID to use DarkSky data
+    // Key ID to use DarkSky data
     final String KEY = "0ce8d92b388386c147050fa6e2e658eb";
     // Time between location updates (5000 milliseconds or 5 seconds)
     final long MIN_TIME = 5000;

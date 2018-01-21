@@ -3,10 +3,5 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-<<<<<<< HEAD
-    <mapping directory="$PROJECT_DIR$/aaghaffardexcomchallenge" vcs="Git" />
-=======
->>>>>>> 64e08653d8d9476ab04a56b877f3ba7978096615
-    <mapping directory="$USER_HOME$/repos/dexcom-challenge-android" vcs="Git" />
   </component>
 </project>
