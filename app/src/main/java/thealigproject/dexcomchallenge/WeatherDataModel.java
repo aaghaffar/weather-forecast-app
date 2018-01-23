@@ -17,9 +17,7 @@ import java.util.List;
 public class WeatherDataModel {
 
     // TODO: Declare the member variables here
-    //Numbers represent day of week (Sunday = 0, Monday = 1, etc.)
-    //Inefficient solution, but the best I could come up with at the time.
-    //It pains me to write repetitive variables, trust me...
+    //Numbers represent day of week (Sunday = 0, Monday = 1, Tuesday = 2, etc.)
     private String mTemperature;
     private String mTemperature1;
     private String mTemperature2;
@@ -58,10 +56,24 @@ public class WeatherDataModel {
             List<JSONObject> jsonArray = new ArrayList<JSONObject>();
             JSONObject jsonResult;
             for(int i = 0; i <= 6 ; i++) {
-                    jsonResult = jsonObject.getJSONObject("daily").getJSONArray("data")
+                jsonResult = jsonObject.getJSONObject("daily").getJSONArray("data")
                         .getJSONObject(i);
-                    jsonArray.add(jsonResult);
+                jsonArray.add(jsonResult);
             }
+
+//            List<String> conditionArray = new ArrayList<>();
+//            String conditionResult;
+//            for(int i = 0; i <= 6; i++) {
+//                conditionResult = weatherData.mCondition = jsonArray.get(i).getString("icon");
+//                conditionArray.add(conditionResult);
+//            }
+//
+//            List<String> iconArray = new ArrayList<>();
+//            String iconResult;
+//            for(int i = 0; i <= 6; i++) {
+//                iconResult = updateWeatherIcon(conditionArray.get(i));
+//                iconArray.add(iconResult);
+//            }
 
             //Condition for each day of the week
             weatherData.mCondition = jsonArray.get(0).getString("icon");
@@ -120,7 +132,7 @@ public class WeatherDataModel {
 
             Calendar cal = Calendar.getInstance();
             int today = cal.get(Calendar.DAY_OF_WEEK);
-            String todayStr = String.valueOf(today);
+            String todayStr = String.valueOf(today); // 1 = Sunday, 2 = Monday, 3 = Tuesday, etc.
 
             if(todayStr.equals("1")) {
                 weatherData.mCondition = jsonObject.getJSONObject("currently").getString("icon");
@@ -132,58 +144,58 @@ public class WeatherDataModel {
                 weatherData.mTemperature = Integer.toString(roundedVal);
             }
             if(todayStr.equals("2")) {
-                weatherData.mCondition = jsonObject.getJSONObject("currently").getString("icon");
-                weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
+                weatherData.mCondition1 = jsonObject.getJSONObject("currently").getString("icon");
+                weatherData.mIconName1 = updateWeatherIcon(weatherData.mCondition1);
                 double humidityR = jsonObject.getJSONObject("currently").getDouble("humidity");
-                weatherData.mHumidity = Double.toString(humidityR);
+                weatherData.mHumidity1 = Double.toString(humidityR);
                 double tempR = jsonObject.getJSONObject("currently").getDouble("temperature");
                 int roundedVal = (int) Math.rint(tempR);
-                weatherData.mTemperature = Integer.toString(roundedVal);
+                weatherData.mTemperature1 = Integer.toString(roundedVal);
             }
             if(todayStr.equals("3")) {
-                weatherData.mCondition = jsonObject.getJSONObject("currently").getString("icon");
-                weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
+                weatherData.mCondition2 = jsonObject.getJSONObject("currently").getString("icon");
+                weatherData.mIconName2 = updateWeatherIcon(weatherData.mCondition2);
                 double humidityR = jsonObject.getJSONObject("currently").getDouble("humidity");
-                weatherData.mHumidity = Double.toString(humidityR);
+                weatherData.mHumidity2 = Double.toString(humidityR);
                 double tempR = jsonObject.getJSONObject("currently").getDouble("temperature");
                 int roundedVal = (int) Math.rint(tempR);
-                weatherData.mTemperature = Integer.toString(roundedVal);
+                weatherData.mTemperature2 = Integer.toString(roundedVal);
             }
             if(todayStr.equals("4")) {
-                weatherData.mCondition = jsonObject.getJSONObject("currently").getString("icon");
-                weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
+                weatherData.mCondition3 = jsonObject.getJSONObject("currently").getString("icon");
+                weatherData.mIconName3 = updateWeatherIcon(weatherData.mCondition3);
                 double humidityR = jsonObject.getJSONObject("currently").getDouble("humidity");
-                weatherData.mHumidity = Double.toString(humidityR);
+                weatherData.mHumidity3 = Double.toString(humidityR);
                 double tempR = jsonObject.getJSONObject("currently").getDouble("temperature");
                 int roundedVal = (int) Math.rint(tempR);
-                weatherData.mTemperature = Integer.toString(roundedVal);
+                weatherData.mTemperature3 = Integer.toString(roundedVal);
             }
             if(todayStr.equals("5")) {
-                weatherData.mCondition = jsonObject.getJSONObject("currently").getString("icon");
-                weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
+                weatherData.mCondition4 = jsonObject.getJSONObject("currently").getString("icon");
+                weatherData.mIconName4 = updateWeatherIcon(weatherData.mCondition4);
                 double humidityR = jsonObject.getJSONObject("currently").getDouble("humidity");
-                weatherData.mHumidity = Double.toString(humidityR);
+                weatherData.mHumidity4 = Double.toString(humidityR);
                 double tempR = jsonObject.getJSONObject("currently").getDouble("temperature");
                 int roundedVal = (int) Math.rint(tempR);
-                weatherData.mTemperature = Integer.toString(roundedVal);
+                weatherData.mTemperature4 = Integer.toString(roundedVal);
             }
             if(todayStr.equals("6")) {
-                weatherData.mCondition = jsonObject.getJSONObject("currently").getString("icon");
-                weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
+                weatherData.mCondition5 = jsonObject.getJSONObject("currently").getString("icon");
+                weatherData.mIconName5 = updateWeatherIcon(weatherData.mCondition5);
                 double humidityR = jsonObject.getJSONObject("currently").getDouble("humidity");
-                weatherData.mHumidity = Double.toString(humidityR);
+                weatherData.mHumidity5 = Double.toString(humidityR);
                 double tempR = jsonObject.getJSONObject("currently").getDouble("temperature");
                 int roundedVal = (int) Math.rint(tempR);
-                weatherData.mTemperature = Integer.toString(roundedVal);
+                weatherData.mTemperature5 = Integer.toString(roundedVal);
             }
             if(todayStr.equals("7")) {
-                weatherData.mCondition = jsonObject.getJSONObject("currently").getString("icon");
-                weatherData.mIconName = updateWeatherIcon(weatherData.mCondition);
+                weatherData.mCondition6 = jsonObject.getJSONObject("currently").getString("icon");
+                weatherData.mIconName6 = updateWeatherIcon(weatherData.mCondition6);
                 double humidityR = jsonObject.getJSONObject("currently").getDouble("humidity");
-                weatherData.mHumidity = Double.toString(humidityR);
+                weatherData.mHumidity6 = Double.toString(humidityR);
                 double tempR = jsonObject.getJSONObject("currently").getDouble("temperature");
                 int roundedVal = (int) Math.rint(tempR);
-                weatherData.mTemperature = Integer.toString(roundedVal);
+                weatherData.mTemperature6 = Integer.toString(roundedVal);
             }
 
 
@@ -223,8 +235,6 @@ public class WeatherDataModel {
     }
 
     // TODO: Create getter methods for temperature, humidity, and icon name:
-
-    //Temperature
 
     public String getTemperature(String day) {
         if (day.equals("Sunday")) {

@@ -39,6 +39,8 @@ public class WeatherController extends AppCompatActivity {
 
     // Constants:
     final int REQUEST_CODE = 678;
+    // Full weather url:
+    // https://api.darksky.net/forecast/0ce8d92b388386c147050fa6e2e658eb/latitude,longitude?exclude=minutely,hourly,alerts,flags
     final String WEATHER_URL = "https://api.darksky.net/forecast/";
     // Key ID to use DarkSky data
     final String KEY = "0ce8d92b388386c147050fa6e2e658eb";
