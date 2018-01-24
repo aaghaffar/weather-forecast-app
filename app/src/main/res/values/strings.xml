@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">7-Day Weather Forecast</string>
+    <string name="app_name">Weather Forecast</string>
     <string name="weatherimage">weather image</string>
     <string name="dayoftheweek">Day</string>
     <string name="Temperature">Temp</string>
     <string name="Humidity">Humidity</string>
+    <string name="textview">TextView</string>
 </resources>

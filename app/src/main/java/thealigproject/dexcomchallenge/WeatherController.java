@@ -18,11 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +28,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
+
+import java.util.Calendar;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -57,14 +55,11 @@ public class WeatherController extends AppCompatActivity {
     ImageView mWeatherImage;
     TextView mTemperatureLabel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ListView mListView;
 
     // TODO: Declare a LocationManager and a LocationListener here:
     LocationManager mLocationManager;
     LocationListener mLocationListener;
-
-    // ListView Setup for days of the week
-    private ListView mListView;
-    String[] dayArray = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +92,8 @@ public class WeatherController extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d("DXCM", "onResume() called");
-
         Log.d("DXCM", "Getting weather for current location");
         getWeatherForCurrentLocation();
-
     }
 
     //Method to get longitude and latitude for location and then weather data
@@ -156,6 +149,7 @@ public class WeatherController extends AppCompatActivity {
             return;
         }
         mLocationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, mLocationListener);
+
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -198,8 +192,9 @@ public class WeatherController extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent = new Intent(WeatherController.this, DetailActivity.class);
 
-                        String[] humidityArray = {weatherData.getHumidity(dayArray[0]), weatherData.getHumidity(dayArray[1]), weatherData.getHumidity(dayArray[2]),
-                                weatherData.getHumidity(dayArray[3]), weatherData.getHumidity(dayArray[4]), weatherData.getHumidity(dayArray[5]), weatherData.getHumidity(dayArray[6])};
+                        String[] humidityArray = {weatherData.getHumidity(0), weatherData.getHumidity(1), weatherData.getHumidity(2),
+                                weatherData.getHumidity(3), weatherData.getHumidity(4),
+                                weatherData.getHumidity(5), weatherData.getHumidity(6)};
 
                         String message = humidityArray[position];
                         intent.putExtra("humidity", message);
@@ -220,23 +215,61 @@ public class WeatherController extends AppCompatActivity {
     // Add updateUI() here:
     private void updateUI(WeatherDataModel weather) {
 
-        String[] tempArray = {weather.getTemperature(dayArray[0]), weather.getTemperature(dayArray[1]), weather.getTemperature(dayArray[2]), weather.getTemperature(dayArray[3]),
-                weather.getTemperature(dayArray[4]), weather.getTemperature(dayArray[5]), weather.getTemperature(dayArray[6])};
+        String[] tempArray = {weather.getTemperature(0), weather.getTemperature(1), weather.getTemperature(2),
+                weather.getTemperature(3), weather.getTemperature(4),
+                weather.getTemperature(5), weather.getTemperature(6)};
 
-        int resourceID = getResources().getIdentifier(weather.getIconName(dayArray[0]), "drawable", getPackageName());
-        int resourceID1 = getResources().getIdentifier(weather.getIconName(dayArray[1]), "drawable", getPackageName());
-        int resourceID2 = getResources().getIdentifier(weather.getIconName(dayArray[2]), "drawable", getPackageName());
-        int resourceID3 = getResources().getIdentifier(weather.getIconName(dayArray[3]), "drawable", getPackageName());
-        int resourceID4 = getResources().getIdentifier(weather.getIconName(dayArray[4]), "drawable", getPackageName());
-        int resourceID5 = getResources().getIdentifier(weather.getIconName(dayArray[5]), "drawable", getPackageName());
-        int resourceID6 = getResources().getIdentifier(weather.getIconName(dayArray[6]), "drawable", getPackageName());
+        int resourceID = getResources().getIdentifier(weather.getIconName(0), "drawable", getPackageName());
+        int resourceID1 = getResources().getIdentifier(weather.getIconName(1), "drawable", getPackageName());
+        int resourceID2 = getResources().getIdentifier(weather.getIconName(2), "drawable", getPackageName());
+        int resourceID3 = getResources().getIdentifier(weather.getIconName(3), "drawable", getPackageName());
+        int resourceID4 = getResources().getIdentifier(weather.getIconName(4), "drawable", getPackageName());
+        int resourceID5 = getResources().getIdentifier(weather.getIconName(5), "drawable", getPackageName());
+        int resourceID6 = getResources().getIdentifier(weather.getIconName(6), "drawable", getPackageName());
 
 
         Integer[] imageArray = {resourceID, resourceID1, resourceID2, resourceID3, resourceID4, resourceID5, resourceID6};
 
-        ListAdapter adapter = new ListAdapter (this, dayArray, tempArray, imageArray);
+        Calendar calendar = Calendar.getInstance();
+        int today = calendar.get(Calendar.DAY_OF_WEEK);
+        // 1 = Sunday, 2 = Monday, 3 = Tuesday, etc.
 
-        mListView.setAdapter(adapter);
+        if(today == 1) {
+            String[] todayArray = {"Today", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
+            mListView.setAdapter(adapter);
+        }
+        if(today == 2) {
+            String[] todayArray = {"Today", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
+            mListView.setAdapter(adapter);
+        }
+        if(today == 3) {
+            String[] todayArray = {"Today", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday"};
+            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
+            mListView.setAdapter(adapter);
+        }
+        if(today == 4) {
+            String[] todayArray = {"Today", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday"};
+            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
+            mListView.setAdapter(adapter);
+        }
+        if(today == 5) {
+            String[] todayArray = {"Today", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"};
+            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
+            mListView.setAdapter(adapter);
+        }
+        if(today == 6) {
+            String[] todayArray = {"Today", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"};
+            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
+            mListView.setAdapter(adapter);
+        }
+        if(today == 7) {
+            String[] todayArray = {"Today", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
+            mListView.setAdapter(adapter);
+        }
+
     }
 
     @Override
