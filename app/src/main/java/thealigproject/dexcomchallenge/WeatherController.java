@@ -29,7 +29,10 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -46,6 +49,8 @@ public class WeatherController extends AppCompatActivity {
     final long MIN_TIME = 5000;
     // Distance between location updates (1000m or 1km)
     final float MIN_DISTANCE = 1000;
+    // Days of the Week
+    final String[] dayArray = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     // TODO: Set LOCATION_PROVIDER here:
     String LOCATION_PROVIDER = LocationManager.GPS_PROVIDER;
@@ -219,20 +224,35 @@ public class WeatherController extends AppCompatActivity {
                 weather.getTemperature(3), weather.getTemperature(4),
                 weather.getTemperature(5), weather.getTemperature(6)};
 
-        int resourceID = getResources().getIdentifier(weather.getIconName(0), "drawable", getPackageName());
-        int resourceID1 = getResources().getIdentifier(weather.getIconName(1), "drawable", getPackageName());
-        int resourceID2 = getResources().getIdentifier(weather.getIconName(2), "drawable", getPackageName());
-        int resourceID3 = getResources().getIdentifier(weather.getIconName(3), "drawable", getPackageName());
-        int resourceID4 = getResources().getIdentifier(weather.getIconName(4), "drawable", getPackageName());
-        int resourceID5 = getResources().getIdentifier(weather.getIconName(5), "drawable", getPackageName());
-        int resourceID6 = getResources().getIdentifier(weather.getIconName(6), "drawable", getPackageName());
+        List<Integer> resourceIDList = new ArrayList<>();
+
+        for(int i = 0; i < dayArray.length; i++) {
+            int resourceIDResult = getResources().getIdentifier(weather.getIconName(i), "drawable", getPackageName());
+            resourceIDList.add(resourceIDResult);
+        }
+
+//        int resourceID0 = getResources().getIdentifier(weather.getIconName(0), "drawable", getPackageName());
+//        int resourceID1 = getResources().getIdentifier(weather.getIconName(1), "drawable", getPackageName());
+//        int resourceID2 = getResources().getIdentifier(weather.getIconName(2), "drawable", getPackageName());
+//        int resourceID3 = getResources().getIdentifier(weather.getIconName(3), "drawable", getPackageName());
+//        int resourceID4 = getResources().getIdentifier(weather.getIconName(4), "drawable", getPackageName());
+//        int resourceID5 = getResources().getIdentifier(weather.getIconName(5), "drawable", getPackageName());
+//        int resourceID6 = getResources().getIdentifier(weather.getIconName(6), "drawable", getPackageName());
 
 
-        Integer[] imageArray = {resourceID, resourceID1, resourceID2, resourceID3, resourceID4, resourceID5, resourceID6};
+        Integer[] imageArray = {resourceIDList.get(0), resourceIDList.get(1), resourceIDList.get(2), resourceIDList.get(3),
+                resourceIDList.get(4), resourceIDList.get(5), resourceIDList.get(6)};
 
         Calendar calendar = Calendar.getInstance();
         int today = calendar.get(Calendar.DAY_OF_WEEK);
         // 1 = Sunday, 2 = Monday, 3 = Tuesday, etc.
+        String dayLongName = calendar.getDisplayName( Calendar.DAY_OF_WEEK ,Calendar.LONG, Locale.getDefault());
+
+//        for(int i = 0; i < dayArray.length; i++) {
+//            if(dayLongName.equals(dayArray[i])) {
+//                dayArray[i] = "Today";
+//            }
+//        }
 
         if(today == 1) {
             String[] todayArray = {"Today", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};

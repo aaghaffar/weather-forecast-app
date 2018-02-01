@@ -20,8 +20,8 @@ public class WeatherDataModel {
     // TODO: Declare the member variables here
     private List<String> mCondition = new ArrayList<>();
     private List<String> mIconName = new ArrayList<>();
-    private List<String> mHumidity = new ArrayList<>();
     private List<String> mTemperature = new ArrayList<>();
+    private List<String> mHumidity = new ArrayList<>();
 
     // TODO: Create a WeatherDataModel from a JSON:
     public static WeatherDataModel fromJson(JSONObject jsonObject) {
