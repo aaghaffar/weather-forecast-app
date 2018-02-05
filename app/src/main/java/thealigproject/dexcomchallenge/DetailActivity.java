@@ -23,8 +23,11 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         String savedExtra = getIntent().getStringExtra("humidity");
-        TextView myText = findViewById(R.id.humidityTV);
-        myText.setText(savedExtra);
+        TextView humidityText = findViewById(R.id.humidityTV);
+        humidityText.setText(savedExtra);
+        String savedExtra2 = getIntent().getStringExtra("summary");
+        TextView summaryText = findViewById(R.id.summaryTV);
+        summaryText.setText(savedExtra2);
 
     }
 }

@@ -7,6 +7,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,6 +17,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,8 +33,11 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,7 +47,7 @@ public class WeatherController extends AppCompatActivity {
 
     // Constants:
     final int REQUEST_CODE = 678;
-    // Full weather url:
+    // Full weather url: Enter latitude and longitude
     // https://api.darksky.net/forecast/0ce8d92b388386c147050fa6e2e658eb/latitude,longitude?exclude=minutely,hourly,alerts,flags
     final String WEATHER_URL = "https://api.darksky.net/forecast/";
     // Key ID to use DarkSky data
@@ -50,10 +57,12 @@ public class WeatherController extends AppCompatActivity {
     // Distance between location updates (1000m or 1km)
     final float MIN_DISTANCE = 1000;
     // Days of the Week
-    final String[] dayArray = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    final String[] dayArray = new String[8];
 
     // TODO: Set LOCATION_PROVIDER here:
-    String LOCATION_PROVIDER = LocationManager.GPS_PROVIDER;
+    String LOCATION_PROVIDER = LocationManager.NETWORK_PROVIDER;
+    String LOCATION_PROVIDER_GPS = LocationManager.GPS_PROVIDER;
+
 
     // Member Variables
     TextView mDayLabel;
@@ -61,6 +70,7 @@ public class WeatherController extends AppCompatActivity {
     TextView mTemperatureLabel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mListView;
+    TextView mCityLabel;
 
     // TODO: Declare a LocationManager and a LocationListener here:
     LocationManager mLocationManager;
@@ -75,8 +85,13 @@ public class WeatherController extends AppCompatActivity {
         mDayLabel = findViewById(R.id.dayTV);
         mWeatherImage = findViewById(R.id.weatherSymbolIV);
         mTemperatureLabel = findViewById(R.id.tempTV);
-        mListView  = findViewById(R.id.dayList);
+        mListView = findViewById(R.id.dayList);
+
         mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
+
+        View header = View.inflate(this, R.layout.list_header, null);
+        mListView.addHeaderView(header, null, false);
+        mCityLabel = findViewById(R.id.cityTV);
 
         //Refresh will find current location and update UI accordingly
         mSwipeRefreshLayout.setOnRefreshListener(
@@ -108,6 +123,7 @@ public class WeatherController extends AppCompatActivity {
         mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+
                 Log.d("DXCM", "onLocationChanged() callback received");
 
                 String longitude = String.valueOf(location.getLongitude());
@@ -115,6 +131,26 @@ public class WeatherController extends AppCompatActivity {
 
                 Log.d("DXCM", "longitude is " + longitude);
                 Log.d("DXCM", "latitude is " + latitude);
+
+                Geocoder geoCoder = new Geocoder(getBaseContext(), Locale.getDefault());
+                List<Address> address;
+                try {
+                    address = geoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+                    if(address == null || address.size() == 0) {
+                        mCityLabel.setText("Location Unknown");
+                    } else {
+                        String city = address.get(0).getLocality();
+                        String state = address.get(0).getAdminArea();
+                        mCityLabel.setText(city + ", " + state); //This will display the city and state.
+                    }
+
+                } catch (IOException e) {
+                    Log.d("DXCM", "IOException occurred");
+                } catch (NullPointerException e) {
+                    Log.d("DXCM", "Null Pointer Exception occurred");
+                }
+
 
                 RequestParams params = new RequestParams();
                 params.put("latitude", latitude);
@@ -153,9 +189,13 @@ public class WeatherController extends AppCompatActivity {
 
             return;
         }
-        mLocationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, mLocationListener);
 
-        mSwipeRefreshLayout.setRefreshing(false);
+        if(mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            mLocationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, mLocationListener);
+        } else {
+            mLocationManager.requestLocationUpdates(LOCATION_PROVIDER_GPS, MIN_TIME, MIN_DISTANCE, mLocationListener);
+        }
+
     }
 
     @Override
@@ -191,18 +231,34 @@ public class WeatherController extends AppCompatActivity {
 
                 updateUI(weatherData);
 
+                mSwipeRefreshLayout.setRefreshing(false);
+
                 //Clicking row will launch details activity which shows humidity value for that day
                 mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent = new Intent(WeatherController.this, DetailActivity.class);
 
-                        String[] humidityArray = {weatherData.getHumidity(0), weatherData.getHumidity(1), weatherData.getHumidity(2),
-                                weatherData.getHumidity(3), weatherData.getHumidity(4),
-                                weatherData.getHumidity(5), weatherData.getHumidity(6)};
+                        String[] humidityArray = new String[8];
+                        String[] summaryArray = new String[8];
 
-                        String message = humidityArray[position];
+                        for(int i = 0; i < humidityArray.length; i++) {
+                            humidityArray[i] = weatherData.getHumidity(i);
+                        }
+
+                        for(int i = 0; i < summaryArray.length; i++) {
+                            if(i == 0) {
+                                summaryArray[i] = weatherData.getSummary();
+                            } else {
+                                summaryArray[i] = null;
+                            }
+
+                        }
+
+                        String message = humidityArray[position - 1];
                         intent.putExtra("humidity", message);
+                        String message2 = summaryArray[position - 1];
+                        intent.putExtra("summary", message2);
                         startActivity(intent);
                     }
                 });
@@ -220,76 +276,39 @@ public class WeatherController extends AppCompatActivity {
     // Add updateUI() here:
     private void updateUI(WeatherDataModel weather) {
 
-        String[] tempArray = {weather.getTemperature(0), weather.getTemperature(1), weather.getTemperature(2),
-                weather.getTemperature(3), weather.getTemperature(4),
-                weather.getTemperature(5), weather.getTemperature(6)};
+        String[] tempArray = new String[8];
+        Integer[] imageArray = new Integer[8];
+        String[] daysOfWeekArray = new String[8];
+        String[] conditionNameArray = new String[8];
 
-        List<Integer> resourceIDList = new ArrayList<>();
-
-        for(int i = 0; i < dayArray.length; i++) {
-            int resourceIDResult = getResources().getIdentifier(weather.getIconName(i), "drawable", getPackageName());
-            resourceIDList.add(resourceIDResult);
+        for(int i = 0; i < tempArray.length; i++) {
+           tempArray[i] = weather.getTemperature(i);
         }
 
-//        int resourceID0 = getResources().getIdentifier(weather.getIconName(0), "drawable", getPackageName());
-//        int resourceID1 = getResources().getIdentifier(weather.getIconName(1), "drawable", getPackageName());
-//        int resourceID2 = getResources().getIdentifier(weather.getIconName(2), "drawable", getPackageName());
-//        int resourceID3 = getResources().getIdentifier(weather.getIconName(3), "drawable", getPackageName());
-//        int resourceID4 = getResources().getIdentifier(weather.getIconName(4), "drawable", getPackageName());
-//        int resourceID5 = getResources().getIdentifier(weather.getIconName(5), "drawable", getPackageName());
-//        int resourceID6 = getResources().getIdentifier(weather.getIconName(6), "drawable", getPackageName());
-
-
-        Integer[] imageArray = {resourceIDList.get(0), resourceIDList.get(1), resourceIDList.get(2), resourceIDList.get(3),
-                resourceIDList.get(4), resourceIDList.get(5), resourceIDList.get(6)};
+        for(int i = 0; i < imageArray.length; i++) {
+            imageArray[i] = getResources().getIdentifier(weather.getIconName(i), "drawable", getPackageName());
+        }
 
         Calendar calendar = Calendar.getInstance();
-        int today = calendar.get(Calendar.DAY_OF_WEEK);
-        // 1 = Sunday, 2 = Monday, 3 = Tuesday, etc.
-        String dayLongName = calendar.getDisplayName( Calendar.DAY_OF_WEEK ,Calendar.LONG, Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM d", Locale.getDefault());
 
-//        for(int i = 0; i < dayArray.length; i++) {
-//            if(dayLongName.equals(dayArray[i])) {
-//                dayArray[i] = "Today";
-//            }
-//        }
-
-        if(today == 1) {
-            String[] todayArray = {"Today", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
-            mListView.setAdapter(adapter);
-        }
-        if(today == 2) {
-            String[] todayArray = {"Today", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
-            mListView.setAdapter(adapter);
-        }
-        if(today == 3) {
-            String[] todayArray = {"Today", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday"};
-            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
-            mListView.setAdapter(adapter);
-        }
-        if(today == 4) {
-            String[] todayArray = {"Today", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday"};
-            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
-            mListView.setAdapter(adapter);
-        }
-        if(today == 5) {
-            String[] todayArray = {"Today", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"};
-            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
-            mListView.setAdapter(adapter);
-        }
-        if(today == 6) {
-            String[] todayArray = {"Today", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"};
-            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
-            mListView.setAdapter(adapter);
-        }
-        if(today == 7) {
-            String[] todayArray = {"Today", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-            ListAdapter adapter = new ListAdapter(this, todayArray, tempArray, imageArray);
-            mListView.setAdapter(adapter);
+        for(int i = 0; i < daysOfWeekArray.length; i++) {
+            if (i == 0) {
+                daysOfWeekArray[0] = "Today";
+            } else {
+                calendar.set(Calendar.DATE, Calendar.DATE - 1);
+                calendar.add(Calendar.DATE, i);
+                daysOfWeekArray[i] = sdf.format(calendar.getTime());
+            }
         }
 
+        for(int i = 0; i < conditionNameArray.length; i++) {
+            conditionNameArray[i] = weather.getConditionName(i);
+        }
+
+
+        ListAdapter adapter = new ListAdapter(this, daysOfWeekArray, tempArray, imageArray, conditionNameArray);
+        mListView.setAdapter(adapter);
     }
 
     @Override
@@ -297,7 +316,7 @@ public class WeatherController extends AppCompatActivity {
         super.onPause();
 
         Log.d("DXCM", "onPause callback received");
-        //Stops updates at the onPause so it doesn't continuously find location
+        //Stops updates at the onPause stage so it doesn't continuously find location
         if (mLocationManager != null) mLocationManager.removeUpdates(mLocationListener);
     }
 

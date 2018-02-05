@@ -22,6 +22,8 @@ public class WeatherDataModel {
     private List<String> mIconName = new ArrayList<>();
     private List<String> mTemperature = new ArrayList<>();
     private List<String> mHumidity = new ArrayList<>();
+    private List<String> mConditionName = new ArrayList<>();
+    private String mSummary;
 
     // TODO: Create a WeatherDataModel from a JSON:
     public static WeatherDataModel fromJson(JSONObject jsonObject) {
@@ -29,59 +31,72 @@ public class WeatherDataModel {
 
             WeatherDataModel weatherData = new WeatherDataModel();
 
-            List<JSONObject> jsonArray = new ArrayList<JSONObject>();
+            List<JSONObject> jsonList = new ArrayList<JSONObject>();
             JSONObject jsonResult;
-            for(int i = 0; i <= 6; i++) {
+            for(int i = 0; i <= 7; i++) {
                 jsonResult = jsonObject.getJSONObject("daily").getJSONArray("data")
                         .getJSONObject(i);
-                jsonArray.add(jsonResult);
+                jsonList.add(jsonResult);
             }
 
-            List<String> conditionArray = new ArrayList<>();
+            List<String> conditionList = new ArrayList<>();
             String conditionResult;
-            for(int i = 0; i <= 6; i++) {
-                conditionResult = jsonArray.get(i).getString("icon");
-                conditionArray.add(conditionResult);
+            for(int i = 0; i <= 7; i++) {
+                conditionResult = jsonList.get(i).getString("icon");
+                conditionList.add(conditionResult);
             }
 
-            List<String> iconArray = new ArrayList<>();
+            List<String> iconList = new ArrayList<>();
             String iconResult;
-            for(int i = 0; i <= 6; i++) {
-                iconResult = updateWeatherIcon(conditionArray.get(i));
-                iconArray.add(iconResult);
+            for(int i = 0; i <= 7; i++) {
+                iconResult = updateWeatherIcon(conditionList.get(i));
+                iconList.add(iconResult);
             }
 
-            List<String> tempArray = new ArrayList<>();
+            List<String> tempList = new ArrayList<>();
             double tempResult;
-            for(int i = 0; i <= 6; i++) {
-                tempResult = jsonArray.get(i).getDouble("temperatureMax");
+            for(int i = 0; i <= 7; i++) {
+                tempResult = jsonList.get(i).getDouble("temperatureMax");
                 int roundedValue = (int) Math.rint(tempResult);
-                tempArray.add(Integer.toString(roundedValue));
+                tempList.add(Integer.toString(roundedValue));
             }
 
-            List<String> humidityArray = new ArrayList<>();
+            List<String> humidityList = new ArrayList<>();
             double humidityResult;
-            for(int i = 0; i <= 6; i++) {
-                humidityResult = jsonArray.get(i).getDouble("humidity");
-                humidityArray.add(Double.toString(humidityResult));
+            for(int i = 0; i <= 7; i++) {
+                humidityResult = jsonList.get(i).getDouble("humidity");
+                int roundedValue2 = (int) Math.rint(humidityResult * 100);
+                humidityList.add(Integer.toString(roundedValue2));
+            }
+
+            List<String> conditionNameList = new ArrayList<>();
+            String conditionNameResult;
+            for(int i = 0; i <= 7; i++) {
+                conditionNameResult = updateConditionName(conditionList.get(i));
+                conditionNameList.add(conditionNameResult);
             }
 
             String jsonCurrentCondition = jsonObject.getJSONObject("currently").getString("icon");
             double jsonCurrentHumidity = jsonObject.getJSONObject("currently").getDouble("humidity");
             double jsonCurrentTemperature = jsonObject.getJSONObject("currently").getDouble("temperature");
 
-            for(int i = 0; i <= 6; i++) {
-                weatherData.mCondition.add(conditionArray.get(i));
-                weatherData.mIconName.add(iconArray.get(i));
-                weatherData.mTemperature.add(tempArray.get(i));
-                weatherData.mHumidity.add(humidityArray.get(i));
+            for(int i = 0; i <= 7; i++) {
+                weatherData.mCondition.add(conditionList.get(i));
+                weatherData.mIconName.add(iconList.get(i));
+                weatherData.mTemperature.add(tempList.get(i));
+                weatherData.mHumidity.add(humidityList.get(i));
+                weatherData.mConditionName.add(conditionNameList.get(i));
             }
 
             weatherData.mCondition.set(0, jsonCurrentCondition);
             weatherData.mIconName.set(0, updateWeatherIcon(weatherData.mCondition.get(0)));
-            weatherData.mHumidity.set(0, Double.toString(jsonCurrentHumidity));
             int roundedVal = (int) Math.rint(jsonCurrentTemperature);
             weatherData.mTemperature.set(0, Integer.toString(roundedVal));
+            int roundedVal2 = (int) Math.rint(jsonCurrentHumidity * 100);
+            weatherData.mHumidity.set(0, Integer.toString(roundedVal2));
+            weatherData.mConditionName.set(0, updateConditionName(weatherData.mCondition.get(0)));
+
+            weatherData.mSummary = jsonObject.getJSONObject("daily").getString("summary");
 
             return weatherData;
 
@@ -118,6 +133,33 @@ public class WeatherDataModel {
         return "dunno";
     }
 
+    private static String updateConditionName(String conditionName) {
+
+        if (conditionName.equals("clear-day")) {
+            return "Sunny";
+        } else if (conditionName.equals("rain")) {
+            return "Rain";
+        } else if (conditionName.equals("snow")) {
+            return "Snow";
+        } else if (conditionName.equals("clear-night")) {
+            return "Clear Night";
+        } else if (conditionName.equals("sleet")) {
+            return "Sleety";
+        } else if (conditionName.equals("wind")) {
+            return "Windy";
+        } else if (conditionName.equals("fog")) {
+            return "Fog";
+        } else if (conditionName.equals("cloudy")) {
+            return "Cloudy";
+        } else if (conditionName.equals("partly-cloudy-day")) {
+            return "Partly Cloudy";
+        } else if (conditionName.equals("partly-cloudy-night")) {
+            return "Partly Cloudy";
+        }
+
+        return "Unknown";
+    }
+
     // TODO: Create getter methods for icon, temperature, and humidity:
 
     public String getIconName(int dayPosition) {
@@ -129,6 +171,14 @@ public class WeatherDataModel {
     }
 
     public String getHumidity(int dayPosition) {
-        return "Humidity = " + mHumidity.get(dayPosition);
+        return "Humidity = " + mHumidity.get(dayPosition) + "%";
+    }
+
+    public String getConditionName(int dayPosition) {
+        return mConditionName.get(dayPosition);
+    }
+
+    public String getSummary() {
+        return mSummary;
     }
 }
