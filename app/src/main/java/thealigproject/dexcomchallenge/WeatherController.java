@@ -17,8 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,9 +33,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -289,14 +285,13 @@ public class WeatherController extends AppCompatActivity {
             imageArray[i] = getResources().getIdentifier(weather.getIconName(i), "drawable", getPackageName());
         }
 
-        Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM d", Locale.getDefault());
 
         for(int i = 0; i < daysOfWeekArray.length; i++) {
             if (i == 0) {
                 daysOfWeekArray[0] = "Today";
             } else {
-                calendar.set(Calendar.DATE, Calendar.DATE - 1);
+                Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.DATE, i);
                 daysOfWeekArray[i] = sdf.format(calendar.getTime());
             }

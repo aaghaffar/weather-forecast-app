@@ -1,14 +1,9 @@
 package thealigproject.dexcomchallenge;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-import android.widget.ListView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
