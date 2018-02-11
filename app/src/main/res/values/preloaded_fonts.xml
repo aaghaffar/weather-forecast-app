@@ -2,7 +2,9 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/aldrich</item>
+        <item>@font/alegreya_sans</item>
         <item>@font/arsenal</item>
+        <item>@font/gudea</item>
         <item>@font/lato</item>
         <item>@font/lato_thin</item>
     </array>

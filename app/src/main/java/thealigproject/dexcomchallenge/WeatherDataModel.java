@@ -104,25 +104,25 @@ public class WeatherDataModel {
     private static String updateWeatherIcon(String condition) {
 
         if (condition.equals("clear-day")) {
-            return "sunny";
+            return "sunny2";
         } else if (condition.equals("rain")) {
-            return "light_rain";
+            return "rain";
         } else if (condition.equals("snow")) {
-            return "snow4";
+            return "snow";
         } else if (condition.equals("clear-night")) {
             return "night";
         } else if (condition.equals("sleet")) {
-            return "sleet";
+            return "sleet2";
         } else if (condition.equals("wind")) {
             return "windy";
         } else if (condition.equals("fog")) {
-            return "fog";
+            return "fog2";
         } else if (condition.equals("cloudy")) {
-            return "overcast";
+            return "overcast2";
         } else if (condition.equals("partly-cloudy-day")) {
-            return "cloudy2";
+            return "cloudy";
         } else if (condition.equals("partly-cloudy-night")) {
-            return "partly_cloudy_night";
+            return "partly_cloudy_night2";
         }
 
         return "dunno";
@@ -139,7 +139,7 @@ public class WeatherDataModel {
         } else if (conditionName.equals("clear-night")) {
             return "Clear Night";
         } else if (conditionName.equals("sleet")) {
-            return "Sleety";
+            return "Sleet";
         } else if (conditionName.equals("wind")) {
             return "Windy";
         } else if (conditionName.equals("fog")) {

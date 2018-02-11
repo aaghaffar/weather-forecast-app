@@ -190,6 +190,7 @@ public class WeatherController extends AppCompatActivity {
             mLocationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, mLocationListener);
         } else {
             mLocationManager.requestLocationUpdates(LOCATION_PROVIDER_GPS, MIN_TIME, MIN_DISTANCE, mLocationListener);
+            Log.d("DXCM", "GPS used");
         }
 
     }
@@ -263,7 +264,7 @@ public class WeatherController extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
                 Log.e("DXCM", "Fail " + e.toString());
-                Log.d("DXCM", "Status Code" + statusCode);
+                Log.d("DXCM", "Status Code " + statusCode);
                 Toast.makeText(WeatherController.this, "Request Failed", Toast.LENGTH_SHORT).show();
             }
         });
