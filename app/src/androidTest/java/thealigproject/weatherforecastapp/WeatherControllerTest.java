@@ -1,4 +1,4 @@
-package thealigproject.dexcomchallenge;
+package thealigproject.weatherforecastchallenge;
 
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
@@ -7,8 +7,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
 

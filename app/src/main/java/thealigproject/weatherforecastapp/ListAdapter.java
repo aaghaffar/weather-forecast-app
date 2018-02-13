@@ -1,4 +1,4 @@
-package thealigproject.dexcomchallenge;
+package thealigproject.weatherforecastchallenge;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

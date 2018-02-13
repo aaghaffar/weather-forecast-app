@@ -1,4 +1,4 @@
-package thealigproject.dexcomchallenge;
+package thealigproject.weatherforecastchallenge;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package thealigproject.dexcomchallenge;
+package thealigproject.weatherforecastchallenge;
 
 // James Smith's Http client library was used for JSON response parsing
 //'http://loopj.com/android-async-http/'
@@ -52,8 +52,6 @@ public class WeatherController extends AppCompatActivity {
     final long MIN_TIME = 5000;
     // Distance between location updates (1000m or 1km)
     final float MIN_DISTANCE = 1000;
-    // Days of the Week
-    final String[] dayArray = new String[8];
 
     // TODO: Set LOCATION_PROVIDER here:
     String LOCATION_PROVIDER = LocationManager.NETWORK_PROVIDER;
@@ -132,13 +130,15 @@ public class WeatherController extends AppCompatActivity {
                 List<Address> address;
                 try {
                     address = geoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
+                    String city = address.get(0).getLocality();
+                    String state = address.get(0).getAdminArea();
+                    String country = address.get(0).getCountryName();
                     if(address == null || address.size() == 0) {
                         mCityLabel.setText("Location Unknown");
-                    } else {
-                        String city = address.get(0).getLocality();
-                        String state = address.get(0).getAdminArea();
+                    } else if(city != null && state != null) {
                         mCityLabel.setText(city + ", " + state); //This will display the city and state.
+                    } else if(state == null) {
+                        mCityLabel.setText(city + ", " + country);
                     }
 
                 } catch (IOException e) {
@@ -152,7 +152,7 @@ public class WeatherController extends AppCompatActivity {
                 params.put("latitude", latitude);
                 params.put("longitude", longitude);
                 params.put("key", KEY);
-                letsDoSomeNetworking(latitude, longitude);
+                getNetworkUpdate(latitude, longitude);
             }
 
             @Override
@@ -212,8 +212,8 @@ public class WeatherController extends AppCompatActivity {
     }
 
 
-    //letsDoSomeNetworking uses James Smith's library for an http request
-    private void letsDoSomeNetworking(String latitude, String longitude) {
+    //getNetworkUpdate uses James Smith's library for an http request
+    private void getNetworkUpdate(String latitude, String longitude) {
 
         AsyncHttpClient client = new AsyncHttpClient();
 

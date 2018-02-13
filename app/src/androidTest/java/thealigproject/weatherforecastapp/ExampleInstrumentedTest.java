@@ -1,4 +1,4 @@
-package thealigproject.dexcomchallenge;
+package thealigproject.weatherforecastchallenge;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
