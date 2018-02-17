@@ -1,4 +1,4 @@
-package thealigproject.weatherforecastchallenge;
+package thealigproject.weatherforecastapp;
 
 import org.json.JSONException;
 import org.json.JSONObject;

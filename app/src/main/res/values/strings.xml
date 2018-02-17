@@ -5,4 +5,5 @@
     <string name="Temperature">Temp</string>
     <string name="Humidity">Humidity</string>
     <string name="textview">TextView</string>
+    <string name="darkskynet"><a href="https://darksky.net/poweredby/">Powered by Dark Sky</a></string>
 </resources>

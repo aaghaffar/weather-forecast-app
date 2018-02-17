@@ -1,4 +1,4 @@
-package thealigproject.weatherforecastchallenge;
+package thealigproject.weatherforecastapp;
 
 // James Smith's Http client library was used for JSON response parsing
 //'http://loopj.com/android-async-http/'
@@ -12,11 +12,18 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -65,6 +72,8 @@ public class WeatherController extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mListView;
     TextView mCityLabel;
+    TextView mDarkSkyLabel;
+    Parcelable state;
 
     // TODO: Declare a LocationManager and a LocationListener here:
     LocationManager mLocationManager;
@@ -80,12 +89,28 @@ public class WeatherController extends AppCompatActivity {
         mWeatherImage = findViewById(R.id.weatherSymbolIV);
         mTemperatureLabel = findViewById(R.id.tempTV);
         mListView = findViewById(R.id.dayList);
-
         mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
 
         View header = View.inflate(this, R.layout.list_header, null);
         mListView.addHeaderView(header, null, false);
         mCityLabel = findViewById(R.id.cityTV);
+
+        View footer = View.inflate(this, R.layout.list_footer, null);
+        mListView.addFooterView(footer, null, false);
+        mDarkSkyLabel = findViewById(R.id.darkSkyTV);
+        String content = "<a href=https://darksky.net/poweredby/>Powered by Dark Sky</a>";
+
+        Spannable s = (Spannable) Html.fromHtml(content);
+        for (URLSpan u: s.getSpans(0, s.length(), URLSpan.class)) {
+            s.setSpan(new UnderlineSpan() {
+                public void updateDrawState(TextPaint tp) {
+                    tp.setUnderlineText(false);
+                }
+            }, s.getSpanStart(u), s.getSpanEnd(u), 0);
+        }
+        mDarkSkyLabel.setText(s);
+
+        mDarkSkyLabel.setMovementMethod(LinkMovementMethod.getInstance());
 
         //Refresh will find current location and update UI accordingly
         mSwipeRefreshLayout.setOnRefreshListener(
@@ -305,6 +330,11 @@ public class WeatherController extends AppCompatActivity {
 
         ListAdapter adapter = new ListAdapter(this, daysOfWeekArray, tempArray, imageArray, conditionNameArray);
         mListView.setAdapter(adapter);
+
+        if(state != null) {
+            Log.d("DXCM", "trying to restore listview state..");
+            mListView.onRestoreInstanceState(state);
+        }
     }
 
     @Override
@@ -314,6 +344,10 @@ public class WeatherController extends AppCompatActivity {
         Log.d("DXCM", "onPause callback received");
         //Stops updates at the onPause stage so it doesn't continuously find location
         if (mLocationManager != null) mLocationManager.removeUpdates(mLocationListener);
+
+        //Saves scroll position when switching activities
+        Log.d("DXCM", "saving listview state at onPause");
+        state = mListView.onSaveInstanceState();
     }
 
 }

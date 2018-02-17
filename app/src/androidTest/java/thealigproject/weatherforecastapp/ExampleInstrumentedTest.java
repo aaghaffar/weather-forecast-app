@@ -1,4 +1,4 @@
-package thealigproject.weatherforecastchallenge;
+package thealigproject.weatherforecastapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("thealigproject.dexcomchallenge", appContext.getPackageName());
+        assertEquals("thealigproject.weatherforecastapp", appContext.getPackageName());
     }
 }

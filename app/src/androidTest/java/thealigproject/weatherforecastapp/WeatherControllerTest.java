@@ -1,4 +1,4 @@
-package thealigproject.weatherforecastchallenge;
+package thealigproject.weatherforecastapp;
 
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
